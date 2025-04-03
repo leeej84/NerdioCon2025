@@ -19,9 +19,12 @@ if (!(Test-Path $installPath)) {
             Expand-Archive -Path "$outputPath\$fileName" -DestinationPath $installPath -Force
             $exeFile = Get-ChildItem $installPath -Recurse | Where {$_.Name -match "telegraf.exe"}
             $installPath = $exeFile.DirectoryName
+
+            #Setup the telegraf Service
+            & $exeFile.FullName --service install
 			
 			#Download the telegraf config File
-			Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/influxdata/telegraf/releases" -OutFile "$installPath\telegraf.conf"
+			Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/leeej84/NerdioCon2025/refs/heads/main/Telegraf/Telegraf.conf" -OutFile "C:\Program Files\Telegraf\telegraf.conf"
 			
             #Start the service
             Get-Service telegraf | Start-Service
