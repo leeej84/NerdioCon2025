@@ -4,7 +4,7 @@
 function Create-TestUsers {
     Write-Host "Creating local test users and group..." -ForegroundColor Cyan
 
-    $Password = ConvertTo-SecureString "P@ssword123!" -AsPlainText -Force
+    $Password = ConvertTo-SecureString "Password100" -AsPlainText -Force
 
     # Create local group 'TestUsers' if it doesn't exist
     if (-not (Get-LocalGroup -Name "TestUsers" -ErrorAction SilentlyContinue)) {
