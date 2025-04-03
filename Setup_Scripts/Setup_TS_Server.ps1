@@ -111,3 +111,15 @@ $principal = New-ScheduledTaskPrincipal -GroupId "TestUsers" -RunLevel Limited
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Description "Run Manager script at logon for TestUsers with config and scripts path" -Force
 
 Write-Host "All setup complete! Test users will now auto-trigger Manager.ps1 with the required parameters at logon." -ForegroundColor Green
+
+# --- Prompt for InfluxDB Token and Save to File ---
+Write-Host "`nPlease enter the InfluxDB token. This will be saved securely to C:\Test_Scripts\Influx_Token.txt" -ForegroundColor Yellow
+$token = Read-Host -AsSecureString "Influx Token"
+$tokenPlain = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($token)
+)
+
+$tokenPath = "C:\Test_Scripts\Influx_Token.txt"
+$tokenPlain | Out-File -FilePath $tokenPath -Encoding UTF8 -Force
+
+Write-Host "Influx token saved to $tokenPath" -ForegroundColor Green
