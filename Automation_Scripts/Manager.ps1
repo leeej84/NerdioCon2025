@@ -9,7 +9,7 @@ param (
     [string]$influxServer = "INFLUX01"
 )
 
-#Set common tags
+# Set common tags
 $commonTags = @{ location = "London"; machine = $env:COMPUTERNAME; username = $env:USERNAME }
 
 # Load config
@@ -38,6 +38,13 @@ function Run-Script {
         Write-Warning "Script not found: $scriptPath"
     }
 }
+
+# --- Launch and Close Edge to ensure registry values are populated ---
+Write-Host "Launching and closing Edge to populate registry..." -ForegroundColor Cyan
+Start-Process "msedge.exe" -ArgumentList "--no-first-run" -WindowStyle Minimized
+Start-Sleep -Seconds 5
+Get-Process "msedge" -ErrorAction SilentlyContinue | Stop-Process -Force
+Write-Host "Edge has been launched and closed." -ForegroundColor Green
 
 # Determine loop mode
 if ($loops -gt 0) {

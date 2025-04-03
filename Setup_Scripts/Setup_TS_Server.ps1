@@ -28,6 +28,15 @@ function Create-TestUsers {
     }
 }
 
+# --- Ensure NuGet provider is installed silently ---
+Write-Host "Installing NuGet provider silently..." -ForegroundColor Cyan
+Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+Import-PackageProvider -Name NuGet -Force
+
+# --- Install Selenium PowerShell module for all users ---
+Write-Host "Installing Selenium PowerShell module for all users..." -ForegroundColor Cyan
+Install-Module -Name Selenium -Force -Scope AllUsers
+
 # --- Chocolatey install ---
 if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
     Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -82,6 +91,8 @@ Expand-Archive -Path $zipFile -DestinationPath $destFolder -Force
 
 # --- Confirm Manager.ps1 exists ---
 $managerScript = Join-Path $destFolder "Manager.ps1"
+$configPath = Join-Path $destFolder "Test_Config.json"
+
 if (-not (Test-Path $managerScript)) {
     Write-Warning "Manager.ps1 not found in $destFolder. Make sure the downloaded archive contains it."
 } else {
@@ -92,17 +103,11 @@ if (-not (Test-Path $managerScript)) {
 Write-Host "Creating scheduled task for TestUsers group..." -ForegroundColor Cyan
 
 $taskName = "RunManagerScriptOnLogon"
-
-# Define action
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$managerScript`""
-
-# Define trigger for logon
+$arguments = "-ExecutionPolicy Bypass -File `"$managerScript`" -ConfigPath `"$configPath`" -ScriptsPath `"$destFolder`""
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $arguments
 $trigger = New-ScheduledTaskTrigger -AtLogOn
-
-# Define principal (group-based)
 $principal = New-ScheduledTaskPrincipal -GroupId "TestUsers" -RunLevel Limited
 
-# Register the task
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Description "Run Manager script at logon for all TestUsers" -Force
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Description "Run Manager script at logon for TestUsers with config and scripts path" -Force
 
-Write-Host "Setup complete. Logon trigger is now wired up to Manager.ps1 for all test users." -ForegroundColor Green
+Write-Host "All setup complete! Test users will now auto-trigger Manager.ps1 with the required parameters at logon." -ForegroundColor Green
