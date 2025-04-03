@@ -3,7 +3,10 @@ param (
     [string]$ConfigPath = ".\Test_Config.json",
 
     [Parameter()]
-    [string]$ScriptsPath = ".\"
+    [string]$ScriptsPath = ".\",
+
+    [Parameter()]
+    [string]$influxServer = "INFLUX01"
 )
 
 #Set common tags

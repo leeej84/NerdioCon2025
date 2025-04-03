@@ -1,6 +1,7 @@
 #Define parameters
 param (
-    [hashtable]$Tags = @{}
+    [hashtable]$Tags = @{},
+    $influxServer
 )
 
 # Define Selenium and WebDriver paths
@@ -20,7 +21,7 @@ function Send-TimingToInflux {
         return
     }
 
-    $influxURL = "http://influxdb-01.ctxlab.local:8086/api/v2/write?org=Performance&bucket=Performance&precision=ms"
+    $influxURL = "http://$($influxServer):8086/api/v2/write?org=Performance&bucket=Performance&precision=ms"
     $influxToken = "$(Get-Content .\Influx_Token.txt)"
     $timestamp = [math]::Round((Get-Date).ToUniversalTime().Subtract([datetime]"1970-01-01").TotalMilliseconds)
 
