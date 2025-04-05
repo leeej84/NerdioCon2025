@@ -36,7 +36,7 @@ $licensingPath = "HKLM:\Software\Microsoft\Office\16.0\Common\Licensing"
 if (-not (Test-Path $licensingPath)) {
     New-Item -Path $licensingPath -Force | Out-Null
 }
-Set-ItemProperty -Path $licensingPath -Name "DisableActivationUI" -Value 1 -Type DWord
+Set-ItemProperty -Path $licensingPath -Name "DisableActivationUI" -Value 1 -Type String
 Write-Host "Activation UI disabled."
 
 # --- Accept EULA ---
@@ -44,7 +44,7 @@ $registrationPath = "HKCU:\Software\Microsoft\Office\16.0\Registration"
 if (-not (Test-Path $registrationPath)) {
     New-Item -Path $registrationPath -Force | Out-Null
 }
-Set-ItemProperty -Path $registrationPath -Name "AcceptAllEulas" -Value 1 -Type DWord
+Set-ItemProperty -Path $registrationPath -Name "AcceptAllEulas" -Value 1 -Type String
 Write-Host "EULA automatically accepted."
 
 # --- Check License Status ---
