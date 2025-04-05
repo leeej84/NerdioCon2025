@@ -51,10 +51,6 @@ $env:Path += ";$($env:ChocolateyInstall)\bin"
 Write-Host "Installing RDS roles..." -ForegroundColor Cyan
 
 Install-WindowsFeature -Name RDS-RD-Server -IncludeManagementTools
-Install-WindowsFeature -Name RDS-Licensing -IncludeManagementTools
-Install-WindowsFeature -Name RDS-RD-Session-Host -IncludeManagementTools
-Install-WindowsFeature -Name RDS-Connection-Broker -IncludeManagementTools
-Install-WindowsFeature -Name RDS-Web-Access -IncludeManagementTools
 
 # --- Install Office & Edge ---
 Write-Host "Installing Edge and Office365..." -ForegroundColor Cyan
@@ -99,16 +95,23 @@ if (-not (Test-Path $managerScript)) {
     Write-Host "Manager.ps1 ready at $managerScript" -ForegroundColor Green
 }
 
-# --- Create Scheduled Task for TestUsers Group ---
-Write-Host "Creating scheduled task for TestUsers group..." -ForegroundColor Cyan
+Write-Host "Creating Startup shortcut to Manager.ps1 for all users..." -ForegroundColor Cyan
 
-$taskName = "RunManagerScriptOnLogon"
+$startupFolder = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+$shortcutPath = Join-Path $startupFolder "Run Manager.lnk"
+$targetPath = "powershell.exe"
 $arguments = "-ExecutionPolicy Bypass -File `"$managerScript`" -ConfigPath `"$configPath`" -ScriptsPath `"$destFolder`""
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -AtLogOn
-$principal = New-ScheduledTaskPrincipal -GroupId "TestUsers" -RunLevel Limited
 
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Description "Run Manager script at logon for TestUsers with config and scripts path" -Force
+# Create WScript.Shell COM object
+$wshShell = New-Object -ComObject WScript.Shell
+$shortcut = $wshShell.CreateShortcut($shortcutPath)
+$shortcut.TargetPath = $targetPath
+$shortcut.Arguments = $arguments
+$shortcut.WorkingDirectory = $destFolder
+$shortcut.WindowStyle = 7 # Minimized
+$shortcut.Save()
+
+Write-Host "Shortcut created: $shortcutPath"
 
 Write-Host "All setup complete! Test users will now auto-trigger Manager.ps1 with the required parameters at logon." -ForegroundColor Green
 

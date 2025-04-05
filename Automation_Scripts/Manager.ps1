@@ -9,6 +9,13 @@ param (
     [string]$influxServer = "INFLUX01"
 )
 
+# --- Skip execution if username matches TestUser pattern ---
+if (!($env:USERNAME -match 'testuser')) {
+    Write-Host "Skipping Manager.ps1 for test user account: $env:USERNAME"
+	Start-Sleep -Seconds 5
+    exit 0
+}
+
 # Set common tags
 $commonTags = @{ location = "London"; machine = $env:COMPUTERNAME; username = $env:USERNAME }
 
@@ -32,7 +39,7 @@ function Run-Script {
     $scriptPath = Join-Path $ScriptsPath $ScriptName
     if (Test-Path $scriptPath) {
         Write-Host "Executing: $ScriptName"
-        & $scriptPath -Tags ($commonTags + @{ script = "$ScriptName" })
+        & $scriptPath -Tags ($commonTags + @{ script = "$ScriptName" }) -influxServer $influxServer
         Start-Sleep -Seconds 5
     } else {
         Write-Warning "Script not found: $scriptPath"

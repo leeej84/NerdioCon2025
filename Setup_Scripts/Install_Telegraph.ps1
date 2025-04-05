@@ -37,3 +37,9 @@ if (!(Test-Path $installPath)) {
         $_ | Out-File "$outputPath\Telegraf_Error.log"
     }
 }
+
+Write-Host "Please enter the InfluxDB token in notepad when it appears" -ForegroundColor Green
+Start-Sleep -Seconds 5
+
+#Open the telegraf conf file so the token can be added
+Start-Process -FilePath notepad.exe -ArgumentList "C:\Program Files\Telegraf\telegraf.conf"
