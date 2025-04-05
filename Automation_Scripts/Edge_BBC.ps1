@@ -158,8 +158,8 @@ function Smooth-Scroll {
 
 # Navigate through some tabs
 $tabs = @{
-    "News" = "//*[@id='global-navigation']/div[2]/ul[2]/li[2]/a/span"  # News
-    "Sport" = "//*[@id='global-navigation']/div[2]/ul[2]/li[3]/a/span"  # Sport
+    "News" = "//*[@id='global-navigation']/div[2]/ul[2]/li[2]"  # News
+    "Sport" = "//*[@id='global-navigation']/div[2]/ul[2]/li[3]/a"  # Sport
     "Weather" = "//*[@id='global-navigation']/div[2]/ul[2]/li[4]/a/span"  # Weather
     "Sounds" = "//*[@id='orb-header']/div/nav[1]/ul/li[6]/a"  # Sounds
 }

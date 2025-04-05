@@ -90,10 +90,27 @@ try {
     $excel = Measure-ExecutionTime -ActionName "Start Excel Application" -Action {
         $app = New-Object -ComObject Excel.Application
         $app.Visible = $true
-        $app.WindowState = -4140  # xlNormal
-        $app.Activate()           # Brings Excel to foreground
+    
+        # Force open a workbook to initialize a window
+        if ($app.Workbooks.Count -eq 0) {
+            $null = $app.Workbooks.Add()
+        }
+    
+        # Use WScript to bring to foreground
+        $shell = New-Object -ComObject WScript.Shell
+        $shell.AppActivate($app.Caption) | Out-Null
+    
         return $app
     } -Tags $Tags
+
+    Start-Sleep -Seconds 1
+    $hWnd = [WinAPI]::FindWindow("XLMAIN", $excel.Caption)
+    if ($hWnd -ne [IntPtr]::Zero) {
+        [WinAPI]::MoveWindow($hWnd, 100, 100, 1024, 768, $true) | Out-Null
+    } else {
+        Write-Host "Failed to find Excel window handle."
+    }
+
 
     if ($null -eq $excel) { throw "Failed to start Excel application." }
 
