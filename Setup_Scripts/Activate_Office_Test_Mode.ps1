@@ -23,7 +23,7 @@ $clickToRunPath = "HKLM:\SOFTWARE\Microsoft\Office\ClickToRun\Configuration"
 if (-not (Test-Path $clickToRunPath)) {
     New-Item -Path $clickToRunPath -Force | Out-Null
 }
-Set-ItemProperty -Path $clickToRunPath -Name "SharedComputerLicensing" -Value 0 -Type DWord
+Set-ItemProperty -Path $clickToRunPath -Name "SharedComputerLicensing" -Value 1 -Type String
 Write-Host "Shared Computer Licensing enabled."
 
 # --- Install the 10-day subscription key ---

@@ -14,6 +14,8 @@ if (!($env:USERNAME -match 'testuser')) {
     Write-Host "Skipping Manager.ps1 for test user account: $env:USERNAME"
 	Start-Sleep -Seconds 5
     exit 0
+} else {
+    Write-Host "Running Manager.ps1 for user account: $env:USERNAME"
 }
 
 # Set common tags
@@ -81,3 +83,4 @@ else {
 }
 
 Write-Host "`nAll tasks completed at $(Get-Date)."
+logoff

@@ -91,6 +91,7 @@ try {
         $app = New-Object -ComObject Excel.Application
         $app.Visible = $true
         $app.WindowState = -4140  # xlNormal
+        $app.Activate()           # Brings Excel to foreground
         return $app
     } -Tags $Tags
 
