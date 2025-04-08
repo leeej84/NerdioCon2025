@@ -12,7 +12,7 @@ function Create-TestUsers {
         Write-Host "Created group: TestUsers" -ForegroundColor Green
     }
 
-    for ($i = 1; $i -le 10; $i++) {
+    for ($i = 1; $i -le 20; $i++) {
         $username = "testuser{0:D2}" -f $i
 
         if (-not (Get-LocalUser -Name $username -ErrorAction SilentlyContinue)) {
