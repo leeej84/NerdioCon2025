@@ -51,5 +51,10 @@ You firstly need to build two virtual machines, one of the virtual machines will
   - Run <i>Activate_Office_Test_Mode.ps1</i> on TSHOST01, this will put office into a 5 day grace period where the program will work even with activation prompts. The script will prompt to rearm if ran more than once.
 - Launcher
   - From any windows machine you can now run <i>Launcher.ps1</i> with the User.csv file locally and it will launch as many RDP sessions as specified. When a user logs in with a name like "testuser" the Manager.ps1 file will automatically run and start the application simulations.
+- Grafana Dashboard
+  - The last step is to login to Grafana and import the Dashboard
+  - navigate to INFLUX01:3000 and you'll be prompted to login to Grafana. admin/admin is the default and you'll be prompted to change this.
+  - Select Dashboards on the left, Select "New" and then Import.
+  - Browse to the Grafana Dashboard folder of the repo and import the dashboard.
 
 I'm not officially supporting this project but please feel free to adapt and modify as fits your needs. 
