@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXDB_V2",
-      "label": "InfluxDB_v2",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "alertlist",
-      "name": "Alert list",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.0"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,13 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 4,
   "links": [],
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -124,9 +81,31 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active_Sessions"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": ""
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -157,7 +136,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"automation_timings\")\r\n  |> filter(fn: (r) => r[\"script\"] == \"Edge_BBC.ps1\")\r\n  |> filter(fn: (r) => r[\"task\"] == \"Launch Edge Browser\")\r\n  |> group(columns: [\"task\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -165,7 +144,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"automation_timings\")\r\n  |> filter(fn: (r) => r[\"script\"] == \"Excel.ps1\")\r\n  |> filter(fn: (r) => r[\"task\"] == \"Start Excel Application\")\r\n  |> group(columns: [\"task\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
@@ -174,7 +153,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"automation_timings\")\r\n  |> filter(fn: (r) => r[\"script\"] == \"PowerPoint.ps1\")\r\n  |> filter(fn: (r) => r[\"task\"] == \"Start PowerPoint Application\")\r\n  |> group(columns: [\"task\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
@@ -183,11 +162,20 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"automation_timings\")\r\n  |> filter(fn: (r) => r[\"script\"] == \"Word.ps1\")\r\n  |> filter(fn: (r) => r[\"task\"] == \"Start Word Application\")\r\n  |> group(columns: [\"task\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PB112F3BB995F0ACE"
+          },
+          "hide": false,
+          "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"SESSIONS\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Active_Sessions\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "E"
         }
       ],
       "title": "Application Start Times",
@@ -196,7 +184,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -246,7 +234,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"SESSIONS\")\r\n  |> filter(fn: (r) => r[\"source\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Active_Sessions\")\r\n  |> group(columns: [\"host\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -258,7 +246,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -314,9 +302,31 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active_Sessions"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": ""
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -343,16 +353,29 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"automation_timings\")\r\n  |> filter(fn: (r) => r[\"script\"] == \"${Application_Script}\")\r\n  |> group(columns: [\"task\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PB112F3BB995F0ACE"
+          },
+          "hide": false,
+          "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"SESSIONS\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Active_Sessions\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "B"
         }
       ],
       "title": "Application Analysis",
       "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
         "w": 5,
@@ -385,7 +408,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -441,7 +464,24 @@
           },
           "unit": "%"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active_Sessions"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -471,7 +511,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"CPU\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Percent_Processor_Time\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -479,7 +519,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"SESSIONS\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Active_Sessions\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
@@ -492,7 +532,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -544,9 +584,27 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "decbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active_Sessions"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -573,7 +631,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"MEMORY\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Committed_Bytes\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -581,11 +639,20 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"MEMORY\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Available_Bytes\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PB112F3BB995F0ACE"
+          },
+          "hide": false,
+          "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"SESSIONS\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Active_Sessions\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "C"
         }
       ],
       "title": "Memory Usage (Bytes)",
@@ -594,7 +661,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -634,6 +701,7 @@
               "mode": "off"
             }
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -646,9 +714,27 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "pps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Current_Disk_Queue_Length"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -675,7 +761,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"DISK\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Current_Disk_Queue_Length\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -683,7 +769,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"DISK\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Reads_persec\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
@@ -692,7 +778,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "hide": false,
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"DISK\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Writes_persec\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
@@ -705,7 +791,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2}"
+        "uid": "PB112F3BB995F0ACE"
       },
       "fieldConfig": {
         "defaults": {
@@ -757,7 +843,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -786,7 +873,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2}"
+            "uid": "PB112F3BB995F0ACE"
           },
           "query": "from(bucket: \"Performance\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"NETWORK\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"TSHOST01\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Bytes_Sent_persec\" or r[\"_field\"] == \"Bytes_Received_persec\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -796,16 +883,20 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "auto",
   "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "text": "Excel.ps1",
+          "value": "Excel.ps1"
+        },
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_INFLUXDB_V2}"
+          "uid": "PB112F3BB995F0ACE"
         },
         "definition": "import \"influxdata/influxdb/schema\"\r\nschema.tagValues(bucket: \"Performance\", tag: \"script\")\r\n",
         "description": "",
@@ -823,13 +914,12 @@
     ]
   },
   "time": {
-    "from": "2025-04-06T14:20:19.000Z",
-    "to": "2025-04-06T14:46:06.000Z"
+    "from": "2025-04-06T14:31:47.906Z",
+    "to": "2025-04-06T14:35:12.692Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Performance Testing - Wider Scale",
   "uid": "bei3ow7bz20w0f",
-  "version": 12,
-  "weekStart": ""
+  "version": 14
 }
